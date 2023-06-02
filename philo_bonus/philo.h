@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:22:10 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/05/31 13:24:01 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:10:50 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_data
 	long			eat_times;
 	int				dead;
 	sem_t			*forks;
+	sem_t			pr;
 	size_t			t0;	
 }	t_data;
 
@@ -56,6 +57,6 @@ int		init_data(t_data *data, int ac, char **av);
 void	ft_usleep(size_t t_ms);
 size_t	current_time(void);
 void	check_death(t_philo *ph, t_data *data);
-void	safe_print(char *evnt, t_philo *philo);
+void	safe_print(char *evnt, t_philo *philo, t_data *data);
 
 #endif

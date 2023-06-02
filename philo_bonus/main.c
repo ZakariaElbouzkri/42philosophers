@@ -6,57 +6,62 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/01 17:10:12 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:18:48 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	safe_print(char *evnt, t_philo *philo)
+void	safe_print(char *evnt, t_philo *philo, t_data *data)
 {
-	printf("%ld %d %s\n", (current_time() - philo->data->t0),
+	sem_wait(data->pr);
+	printf("%ld %d %s\n", (current_time() - data->t0),
 		philo->id, evnt);
+	sem_post(data->pr);
 }
 
-void	*routine(void *data)
+void	routine(t_philo *ph, t_data *data)
 {
-	t_philo *ph;
-
-	ph = (t_philo *)data;
-	if (!(ph->id & 1))
-		ft_usleep(10);
-	while (ph->eat_times != ph->data->eat_times)
+	while (ph->eat_times != data->eat_times)
 	{
-		if (ph->data->dead == 1)
-			return (NULL);
-		sem_wait(ph->data->forks);
-		safe_print("has taken a fork", ph);
-		sem_wait(ph->data->forks);
-		safe_print("has taken a fork", ph);
+		sem_wait(data->forks);
+		safe_print("has taking a fork", ph, data);
+		sem_wait(data->forks);
+		safe_print("has taking a fork", ph, data);
 		ph->last_m = current_time();
-		safe_print("is eating", ph);
-		ft_usleep(ph->data->time_to_eat);
-		ph->eat_times += (ph->eat_times >= 0);
-		sem_post(ph->data->forks);
-		sem_post(ph->data->forks);
-		safe_print("is sleeping", ph);
-		ft_usleep(ph->data->time_to_sleep);
-		safe_print("is thinking", ph);
+		safe_print("is eating", ph, data);
+		ft_usleep(data->time_to_eat);
+		ph->eat_times += (data->eat_times >= 0);
+		sem_post(data->forks);
+		sem_post(data->forks);
+		safe_print("is sleeping", ph, data);
+		ft_usleep(data->time_to_sleep);
+		safe_print("is thinking", ph, data);
 	}
-	return (NULL);
 }
 
 int	send_to_table(t_philo *ph, t_data *data)
 {
-	int i;
+	int		i;
+	int		status;
 
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
 	{
-		if ((ph[i].pid = fork()))
-			routine(&ph[i]);
+		if (!(ph[i].pid = fork()))
+			routine(&ph[i], data);
 	}
-	// check_death(ph, data);
+	while (true)
+	{
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+		{
+			status = WEXITSTATUS(status);
+			if (status != 0)
+				printf("%ld philo %d died\n", current_time() - data->t0, status);
+			break;
+		}
+	}
 	return (0);
 }
 
@@ -72,7 +77,6 @@ int	philosophers(t_data *data)
 	while ((++i) < data->nbr_of_philo)
 	{
 		philos[i].id = i + 1;
-		philos[i].data = data;
 		philos[i].last_m = data->t0;
 		philos[i].eat_times = 0;
 	}

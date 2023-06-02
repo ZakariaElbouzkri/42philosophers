@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 09:42:33 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/01 17:08:48 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/01 19:22:41 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	check_death(t_philo *ph, t_data *data)
 		if ((long)(t - ph[i].last_m) >= data->time_to_die)
 		{
 			data->dead = 1;
-			ft_usleep(10);
+			ft_usleep(20);
 			pthread_mutex_lock(&data->pr);
 			if (ph[i].eat_times != data->eat_times)
 				printf("%ld philo %d died\n", t - data->t0, ph[i].id);

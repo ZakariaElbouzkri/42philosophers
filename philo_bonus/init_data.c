@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:51:29 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/05/31 13:21:59 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/02 14:10:23 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int	init_data(t_data *data, int ac, char **av)
 	data->eat_times = (ac == 6) * args[4] + (ac != 6) * (-1);
 	data->t0 = current_time();
 	data->dead = 0;
+	sem_unlink("pr");
+	data->pr = sem_open("pr", O_CREAT|O_RDWR|O_EXCL, 1);
 	sem_unlink(NAME);
 	data->forks = sem_open(NAME, O_CREAT|O_RDWR|O_EXCL, data->nbr_of_philo);
 	return (1);
