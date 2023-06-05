@@ -1,6 +1,6 @@
 NAME = philo
 
-CC = cc -Wall -Wextra -Werror
+CC = cc -Wall -Wextra -Werror 
 
 RM = rm -f
 

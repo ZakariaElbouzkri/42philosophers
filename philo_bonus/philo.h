@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:22:10 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/02 14:10:50 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:16:10 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,16 @@
 #include <sys/time.h>
 #include <stdbool.h>
 #include <semaphore.h>
+#include <signal.h>
 
-#define NAME "frk"
+# define FORKS "fork"
+# define PR "print"
+# define DT "death"
+# define TAKE_FORK "has taken a fork"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define DIE "died"
 
 typedef struct s_data
 {
@@ -35,7 +43,7 @@ typedef struct s_data
 	long			eat_times;
 	int				dead;
 	sem_t			*forks;
-	sem_t			pr;
+	sem_t			*pr;
 	size_t			t0;	
 }	t_data;
 
@@ -46,6 +54,7 @@ typedef struct s_philo
 	pthread_t		tid;
 	t_data			*data;
 	size_t			last_m;
+	sem_t			*death;
 	long			eat_times;
 } t_philo;
 

@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:51:29 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/05 17:00:41 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:12:56 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	init_data(t_data *data, int ac, char **av)
 	if (!args)
 		return (0);
 	if (!fill_args(av, args))
-		return (0);
+		return (free(args), 0);
 	data->nbr_of_philo = args[0];
 	data->time_to_die = args[1];
 	data->time_to_eat = args[2];
@@ -73,5 +73,6 @@ int	init_data(t_data *data, int ac, char **av)
 	pthread_mutex_init(&data->d, NULL);
 	pthread_mutex_init(&data->pr, NULL);
 	pthread_mutex_init(&data->ate, NULL);
+	free(args);
 	return (1);
 }

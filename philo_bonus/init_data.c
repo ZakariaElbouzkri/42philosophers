@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:51:29 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/02 14:10:23 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:00:06 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	init_data(t_data *data, int ac, char **av)
 	if (!args)
 		return (0);
 	if (!fill_args(av, args))
-		return (0);
+		return (free(args), 0);
 	data->nbr_of_philo = args[0];
 	data->time_to_die = args[1];
 	data->time_to_eat = args[2];
@@ -70,9 +70,10 @@ int	init_data(t_data *data, int ac, char **av)
 	data->eat_times = (ac == 6) * args[4] + (ac != 6) * (-1);
 	data->t0 = current_time();
 	data->dead = 0;
-	sem_unlink("pr");
-	data->pr = sem_open("pr", O_CREAT|O_RDWR|O_EXCL, 1);
-	sem_unlink(NAME);
-	data->forks = sem_open(NAME, O_CREAT|O_RDWR|O_EXCL, data->nbr_of_philo);
+	sem_unlink(PR);
+	data->pr = sem_open(PR, O_CREAT|O_EXCL, 0777, 1);
+	sem_unlink(FORKS);
+	data->forks = sem_open(FORKS, O_CREAT|O_EXCL, 0777, data->nbr_of_philo);
+	free(args);
 	return (1);
 }
