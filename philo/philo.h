@@ -6,22 +6,28 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:22:10 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/05/30 19:07:32 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:03:29 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <stdio.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <ctype.h>
-#include <string.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <stdbool.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <pthread.h>
+# include <ctype.h>
+# include <string.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <stdbool.h>
+
+# define TAKE_FORK "has taken a fork"
+# define EAT "is eating"
+# define SLEEP "is sleeping"
+# define THINK "is thinking"
+# define DIE "died"
 
 typedef struct s_data
 {
@@ -33,8 +39,9 @@ typedef struct s_data
 	int				dead;
 	size_t			t0;
 	pthread_mutex_t	pr;
-	pthread_mutex_t	d;	
-} t_data;
+	pthread_mutex_t	d;
+	pthread_mutex_t	ate;
+}	t_data;
 
 typedef struct s_philo
 {
@@ -45,8 +52,7 @@ typedef struct s_philo
 	t_data			*data;
 	size_t			last_m;
 	long			eat_times;
-} t_philo;
-
+}	t_philo;
 
 // parser
 long	check_num(char *s);

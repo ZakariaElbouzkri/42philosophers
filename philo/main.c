@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/01 19:21:59 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:01:57 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,42 +15,42 @@
 void	safe_print(char *evnt, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->pr);
-	printf("%ld philo %d %s\n", (current_time() - philo->data->t0),
+	printf("%ld %d %s\n", (current_time() - philo->data->t0),
 		philo->id, evnt);
 	pthread_mutex_unlock(&philo->data->pr);
 }
 
 void	*routine(void *data)
 {
-	t_philo *ph;
+	t_philo	*ph;
 
 	ph = (t_philo *)data;
 	if (!(ph->id & 1))
-		ft_usleep(10);
-	while (ph->eat_times != ph->data->eat_times)
+		usleep(ph->data->time_to_eat / 2);
+	while (ph->data->eat_times != ph->eat_times)
 	{
-		if (ph->data->dead == 1)
-			return (NULL);
 		pthread_mutex_lock(&ph->fork);
-		safe_print("has taken a fork", ph);
+		safe_print(TAKE_FORK, ph);
 		pthread_mutex_lock(ph->r_fork);
-		safe_print("has taken a fork", ph);
+		safe_print(TAKE_FORK, ph);
+		pthread_mutex_lock(&ph->data->d);
 		ph->last_m = current_time();
-		safe_print("is eating", ph);
+		pthread_mutex_unlock(&ph->data->d);
+		safe_print(EAT, ph);
 		ft_usleep(ph->data->time_to_eat);
-		ph->eat_times += (ph->eat_times >= 0);
+		ph->eat_times += (ph->data->eat_times >= 0);
 		pthread_mutex_unlock(&ph->fork);
 		pthread_mutex_unlock(ph->r_fork);
-		safe_print("is sleeping", ph);
+		safe_print(SLEEP, ph);
 		ft_usleep(ph->data->time_to_sleep);
-		safe_print("is thinkig", ph);
+		safe_print(THINK, ph);
 	}
 	return (NULL);
 }
 
 int	send_to_table(t_philo *ph, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
@@ -59,14 +59,18 @@ int	send_to_table(t_philo *ph, t_data *data)
 	while ((++i) < data->nbr_of_philo)
 		pthread_detach(ph[i].thread);
 	check_death(ph, data);
-	pthread_mutex_destroy(&data->pr);
+	i = -1;
+	while (++i < data->nbr_of_philo)
+		pthread_mutex_destroy(&ph[i].fork);
 	pthread_mutex_destroy(&data->d);
+	pthread_mutex_destroy(&data->pr);
+	free(ph);
 	return (0);
 }
 
 int	philosophers(t_data *data)
 {
-	t_philo *philos;
+	t_philo	*philos;
 	int		i;
 
 	philos = malloc(sizeof(t_philo) * data->nbr_of_philo);
@@ -88,7 +92,7 @@ int	philosophers(t_data *data)
 	return (send_to_table(philos, data));
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_data	data;
 
@@ -101,5 +105,3 @@ int main(int argc, char **argv)
 		return (0);
 	return (philosophers(&data));
 }
-
-// [5 800 200 200 7]

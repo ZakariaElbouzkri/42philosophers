@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 09:42:33 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/01 19:22:41 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:03:23 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,21 @@ void	ft_usleep(size_t t_ms)
 void	check_death(t_philo *ph, t_data *data)
 {
 	int	i;
-	size_t t;
 
-	i = 0;
+	i = -1;
 	while (true)
 	{
 		pthread_mutex_lock(&data->d);
-		t = current_time();
-		if ((long)(t - ph[i].last_m) >= data->time_to_die)
+		if ((long)(current_time() - ph[++i].last_m) >= data->time_to_die)
 		{
-			data->dead = 1;
-			ft_usleep(20);
 			pthread_mutex_lock(&data->pr);
-			if (ph[i].eat_times != data->eat_times)
-				printf("%ld philo %d died\n", t - data->t0, ph[i].id);
-			pthread_mutex_unlock(&data->pr);
-			return ;
+			if (ph[i].data->eat_times != ph[i].eat_times)
+				printf("%ld %d %s\n", current_time() - data->t0, ph[i].id, DIE);
+			ft_usleep(100);
+			break ;
 		}
 		pthread_mutex_unlock(&data->d);
-		i++;
 		if ((i + 1) == data->nbr_of_philo)
-			i = 0;
+			i = -1;
 	}
-	i = -1;
-	while (++i < data->nbr_of_philo)
-		pthread_mutex_destroy(&ph[i].fork);
 }
