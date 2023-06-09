@@ -24,6 +24,9 @@
 #include <stdbool.h>
 #include <semaphore.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 
 # define FORKS "fork"
 # define PR "print"
