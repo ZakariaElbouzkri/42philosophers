@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 09:44:06 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/12 11:24:43 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/12 12:31:44 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ char	*ft_itoa(int nbr)
 	return (ret);
 }
 
-
-
-size_t current_time()
+size_t	current_time(void)
 {
 	struct timeval	time;
 
@@ -54,11 +52,9 @@ size_t current_time()
 
 void	ft_usleep(size_t t_ms)
 {
-	size_t start;
+	size_t	start;
 
 	start = current_time();
 	while (current_time() - start < t_ms)
 		usleep(100);
 }
-
-

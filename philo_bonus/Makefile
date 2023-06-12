@@ -2,12 +2,16 @@ NAME = philo_bonus
 
 CC = CC -std=c11
 CC += -Wall -Wextra -Werror
-CC += -g -fsanitize=thread
-CC += -pthread
+# CC += -g -fsanitize=thread
+# CC += -pthread
 
 RM = rm -f 
 
-SRC = main.c parse_data.c utils.c
+SRC = main.c \
+	parse_data.c \
+	routine.c \
+	kill_processes.c \
+	utils.c \
 
 OBJ = $(SRC:.c=.o)
 
