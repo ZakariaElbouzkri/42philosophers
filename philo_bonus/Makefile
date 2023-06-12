@@ -1,29 +1,30 @@
-NAME = philo
+NAME = philo_bonus
 
-CC = cc -Wall -Wextra -Werror 
+CC = CC -std=c11
+CC += -Wall -Wextra -Werror
+CC += -g -fsanitize=thread
+CC += -pthread
 
-CC += -fsanitize=thread
+RM = rm -f 
 
-RM = rm -f
+SRC = main.c parse_data.c utils.c
 
-SRCS = main.c init_data.c utils.c
+OBJ = $(SRC:.c=.o)
 
-OBJ = $(SRCS:.c=.o)
+all :: $(NAME)
 
-all: $(NAME)
-
-$(NAME): $(OBJ)
-	$(CC) $^ -o $@
+$(NAME) : $(OBJ)
+	@$(CC) $^ -o $@
+	@echo $@ created
 
 %.o : %.c philo.h
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
+	@echo "Compiling '$<'... Done."
 
-clean:
+clean : 
 	$(RM) $(OBJ)
-
-fclean: clean
+fclean : clean
 	$(RM) $(NAME)
 
-re:fclean all
-
-.PHONY:all clean fclean re
+re : fclean all
+	

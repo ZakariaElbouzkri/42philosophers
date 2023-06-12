@@ -1,0 +1,5 @@
+.vscode
+philo_bonus
+*.o
+*test*
+

@@ -5,14 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 09:42:33 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/05 17:55:55 by zel-bouz         ###   ########.fr       */
+/*   Created: 2023/06/12 09:44:06 by zel-bouz          #+#    #+#             */
+/*   Updated: 2023/06/12 11:24:43 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-size_t	current_time(void)
+size_t	ft_strlen(char *s)
+{
+	if (!*s)
+		return (0);
+	return (1 + ft_strlen(++s));
+}
+
+char	*ft_itoa(int nbr)
+{
+	int		len;
+	int		n;
+	char	*ret;
+
+	n = nbr;
+	len = 0;
+	while (n)
+	{
+		len++;
+		n /= 10;
+	}
+	ret = malloc(sizeof(char) * len);
+	ret[len] = '\0';
+	while (nbr && len >= 0)
+	{
+		ret[--len] = ((nbr % 10) + '0');
+		nbr /= 10;
+	}
+	return (ret);
+}
+
+
+
+size_t current_time()
 {
 	struct timeval	time;
 
@@ -22,32 +54,11 @@ size_t	current_time(void)
 
 void	ft_usleep(size_t t_ms)
 {
-	size_t	start;
+	size_t start;
 
 	start = current_time();
 	while (current_time() - start < t_ms)
 		usleep(100);
 }
 
-void	check_death(t_philo *ph, t_data *data)
-{
-	int	i;
-	size_t t;
 
-	i = 0;
-	while (true)
-	{
-		t = current_time();
-		if ((long)(t - ph[i].last_m) >= data->time_to_die)
-		{
-			data->dead = 1;
-			ft_usleep(10);
-			if (ph[i].eat_times != data->eat_times)
-				printf("%ld philo %d died\n", t - data->t0, ph[i].id);
-			return ;
-		}
-		i++;
-		if ((i + 1) == data->nbr_of_philo)
-			i = 0;
-	}
-}

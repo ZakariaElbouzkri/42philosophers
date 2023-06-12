@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/05 17:01:57 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/10 03:57:47 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	*routine(void *data)
 	t_philo	*ph;
 
 	ph = (t_philo *)data;
-	if (!(ph->id & 1))
-		usleep(ph->data->time_to_eat / 2);
+	if (!(ph->id % 2))
+		usleep(ph->data->time_to_eat);
 	while (ph->data->eat_times != ph->eat_times)
 	{
 		pthread_mutex_lock(&ph->fork);
