@@ -1,6 +1,6 @@
 NAME = philo_bonus
 
-CC = CC
+CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 
