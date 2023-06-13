@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/13 10:21:15 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:37:17 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	safe_print(char *evnt, t_philo *philo, int s)
 {
 	pthread_mutex_lock(&philo->data->pr);
-	printf("%ld %d %s\n", (current_time() - philo->data->t0),
+	printf("%ld\t%d\t%s\n", (current_time() - philo->data->t0),
 		philo->id, evnt);
 	if (s)
 		pthread_mutex_unlock(&philo->data->pr);
