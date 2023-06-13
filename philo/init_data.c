@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:51:29 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/05 17:12:56 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:18:54 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ int	init_data(t_data *data, int ac, char **av)
 	data->eat_times = (ac == 6) * args[4] + (ac != 6) * (-1);
 	data->t0 = current_time();
 	data->dead = 0;
-	pthread_mutex_init(&data->d, NULL);
-	pthread_mutex_init(&data->pr, NULL);
-	pthread_mutex_init(&data->ate, NULL);
+	if (pthread_mutex_init(&data->d, NULL))
+		return (free(args), printf("mutex_init error\n"), 0);
+	if (pthread_mutex_init(&data->pr, NULL))
+		return (free(args), printf("mutex_init error\n"), 0);
+	if (pthread_mutex_init(&data->ate, NULL))
+		return (free(args), printf("mutex_init error\n"), 0);
 	free(args);
 	return (1);
 }

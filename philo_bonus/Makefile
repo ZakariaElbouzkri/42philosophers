@@ -1,9 +1,8 @@
 NAME = philo_bonus
 
-CC = CC -std=c11
-CC += -Wall -Wextra -Werror
-# CC += -g -fsanitize=thread
-# CC += -pthread
+CC = CC
+
+CFLAGS = -Wall -Wextra -Werror
 
 RM = rm -f 
 
@@ -15,18 +14,19 @@ SRC = main.c \
 
 OBJ = $(SRC:.c=.o)
 
-all :: $(NAME)
+all : $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $^ -o $@
+	@$(CC) $(CFLAGS) $^ -o $@
 	@echo $@ created
 
 %.o : %.c philo.h
-	@$(CC) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiling '$<'... Done."
 
 clean : 
 	$(RM) $(OBJ)
+
 fclean : clean
 	$(RM) $(NAME)
 

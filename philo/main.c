@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/13 09:42:27 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:21:15 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,11 @@ int	send_to_table(t_philo *ph, t_data *data)
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
 		if (pthread_create(&ph[i].thread, NULL, routine, &ph[i]))
-			return (printf("error occurred during thread creation\n"), 1);
+			return (free(ph), printf("thread creation error\n"), 1);
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
-		pthread_detach(ph[i].thread);
+		if (pthread_detach(ph[i].thread))
+			return (free(ph), printf("thread detach error\n"), 1);
 	check_death(ph, data);
 	i = -1;
 	while (++i < data->nbr_of_philo)
@@ -83,7 +84,8 @@ int	philosophers(t_data *data)
 	while ((++i) < data->nbr_of_philo)
 	{
 		philos[i].id = i + 1;
-		pthread_mutex_init(&philos[i].fork, NULL);
+		if (pthread_mutex_init(&philos[i].fork, NULL))
+			return (free(philos), printf("mutex_init error\n"), 1);
 		philos[i].data = data;
 		philos[i].last_m = data->t0;
 		philos[i].eat_times = 0;
