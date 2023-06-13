@@ -1,7 +1,7 @@
 NAME = philo
 
 CC = cc -Wall -Wextra -Werror
-CC += -fsanitize=thread
+# CC += -fsanitize=thread
 RM = rm -f
 
 SRCS = main.c init_data.c utils.c

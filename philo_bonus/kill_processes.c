@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:04:36 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/12 12:39:55 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 09:43:09 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	kill_processes(t_philo *ph, t_data *data)
 		}
 	}
 	kill_all(data, ph, 0);
+	// system("leaks philo_bonus");
 }
 
 void	create_processes(t_philo *ph, t_data *data)

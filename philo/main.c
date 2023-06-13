@@ -6,18 +6,19 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:23:51 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/10 03:57:47 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 09:42:27 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	safe_print(char *evnt, t_philo *philo)
+void	safe_print(char *evnt, t_philo *philo, int s)
 {
 	pthread_mutex_lock(&philo->data->pr);
 	printf("%ld %d %s\n", (current_time() - philo->data->t0),
 		philo->id, evnt);
-	pthread_mutex_unlock(&philo->data->pr);
+	if (s)
+		pthread_mutex_unlock(&philo->data->pr);
 }
 
 void	*routine(void *data)
@@ -30,20 +31,20 @@ void	*routine(void *data)
 	while (ph->data->eat_times != ph->eat_times)
 	{
 		pthread_mutex_lock(&ph->fork);
-		safe_print(TAKE_FORK, ph);
+		safe_print(TAKE_FORK, ph, 1);
 		pthread_mutex_lock(ph->r_fork);
-		safe_print(TAKE_FORK, ph);
+		safe_print(TAKE_FORK, ph, 1);
 		pthread_mutex_lock(&ph->data->d);
 		ph->last_m = current_time();
 		pthread_mutex_unlock(&ph->data->d);
-		safe_print(EAT, ph);
+		safe_print(EAT, ph, 1);
 		ft_usleep(ph->data->time_to_eat);
 		ph->eat_times += (ph->data->eat_times >= 0);
 		pthread_mutex_unlock(&ph->fork);
 		pthread_mutex_unlock(ph->r_fork);
-		safe_print(SLEEP, ph);
+		safe_print(SLEEP, ph, 1);
 		ft_usleep(ph->data->time_to_sleep);
-		safe_print(THINK, ph);
+		safe_print(THINK, ph, 1);
 	}
 	return (NULL);
 }
@@ -54,7 +55,8 @@ int	send_to_table(t_philo *ph, t_data *data)
 
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
-		pthread_create(&ph[i].thread, NULL, routine, &ph[i]);
+		if (pthread_create(&ph[i].thread, NULL, routine, &ph[i]))
+			return (printf("error occurred during thread creation\n"), 1);
 	i = -1;
 	while ((++i) < data->nbr_of_philo)
 		pthread_detach(ph[i].thread);
@@ -63,6 +65,7 @@ int	send_to_table(t_philo *ph, t_data *data)
 	while (++i < data->nbr_of_philo)
 		pthread_mutex_destroy(&ph[i].fork);
 	pthread_mutex_destroy(&data->d);
+	pthread_mutex_destroy(&data->pr);
 	pthread_mutex_destroy(&data->pr);
 	free(ph);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/29 20:22:10 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/05 17:03:29 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/12 14:45:06 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ int		init_data(t_data *data, int ac, char **av);
 void	ft_usleep(size_t t_ms);
 size_t	current_time(void);
 void	check_death(t_philo *ph, t_data *data);
-void	safe_print(char *evnt, t_philo *philo);
+void	safe_print(char *evnt, t_philo *philo, int s);
 
 #endif
