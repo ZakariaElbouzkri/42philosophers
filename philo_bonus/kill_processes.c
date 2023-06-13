@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:04:36 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/13 09:43:09 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:02:30 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	kill_processes(t_philo *ph, t_data *data)
 	j = -1;
 	while (++j < data->nbr_of_philo)
 	{
-		waitpid(-1, &status, 0);
+		wait(&status);
 		if (WIFEXITED(status))
 		{
 			if (WEXITSTATUS(status))
@@ -49,7 +49,6 @@ void	kill_processes(t_philo *ph, t_data *data)
 		}
 	}
 	kill_all(data, ph, 0);
-	// system("leaks philo_bonus");
 }
 
 void	create_processes(t_philo *ph, t_data *data)
