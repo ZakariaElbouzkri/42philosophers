@@ -6,7 +6,7 @@
 /*   By: zel-bouz <zel-bouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 11:56:55 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/24 20:30:30 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:35:33 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	routine(t_philo *ph, t_data *data)
 	sem_unlink(ph->name);
 	ph->death = sem_open(ph->name, O_CREAT | O_RDWR, 0777, 1);
 	pthread_create(&ph->tid, NULL, check_death, ph);
+	free(ph->name);
 	pthread_detach(ph->tid);
 	while (ph->eat_times != data->eat_times)
 	{
