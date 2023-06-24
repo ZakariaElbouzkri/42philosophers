@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zel-bouz <zel-bouz@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zel-bouz <zel-bouz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 09:42:33 by zel-bouz          #+#    #+#             */
-/*   Updated: 2023/06/13 10:23:41 by zel-bouz         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:28:17 by zel-bouz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	check_death(t_philo *ph, t_data *data)
 		pthread_mutex_lock(&data->d);
 		if ((long)(current_time() - ph[++i].last_m) >= data->time_to_die)
 		{
+			if (ph->data->eat_times == ph[i].eat_times)
+				return ;
 			usleep(1000);
 			safe_print(DIE, ph, 0);
 			sleep(1);
